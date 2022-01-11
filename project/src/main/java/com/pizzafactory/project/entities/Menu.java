@@ -1,40 +1,55 @@
 package com.pizzafactory.project.entities;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+
 import javax.persistence.*;
+import java.util.Set;
 
 @Entity
+@Table(name = "menu")
 public class Menu {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long Id;
+    private Long id;
 
-    @Column
-    private String itemName;
-    @Column
+    private String item;
     private String description;
-    @Column
-    private String drink;
 
-    public Menu(String itemName, String description, String drink) {
-        this.itemName = itemName;
-        this.description = description;
-        this.drink = drink;
-    }
+    @ManyToMany
+    @JoinTable(
+            name = "menu_drink",
+            joinColumns = @JoinColumn(name = "menu_id"),
+            inverseJoinColumns = @JoinColumn(name ="drink_id")
+    )
+    private Set<Drink> drink;
+
+    @OneToMany(mappedBy = "menu")
+    @JsonIgnore
+    private Set<OrderMenu> orderMenus;
 
     public Menu() {
     }
 
+    public Menu(String item, String description, Set<Drink> drink) {
+        this.item = item;
+        this.description = description;
+        this.drink = drink;
+    }
+
     public Long getId() {
-        return Id;
+        return id;
     }
 
-    public String getItemName() {
-        return itemName;
+    public String getItem() {
+        return item;
     }
 
-    public void setItemName(String itemName) {
-        this.itemName = itemName;
+    public void setItem(String item) {
+        this.item = item;
     }
 
     public String getDescription() {
@@ -45,11 +60,19 @@ public class Menu {
         this.description = description;
     }
 
-    public String getDrink() {
+    public Set<Drink> getDrink() {
         return drink;
     }
 
-    public void setDrink(String drink) {
+    public void setDrink(Set<Drink> drink) {
         this.drink = drink;
+    }
+
+    public Set<OrderMenu> getOrderMenus() {
+        return orderMenus;
+    }
+
+    public void setOrderMenus(Set<OrderMenu> orderMenus) {
+        this.orderMenus = orderMenus;
     }
 }
