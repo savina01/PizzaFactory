@@ -5,5 +5,5 @@ What I've learned:
 - Working with Postman.
 - Connecting SQL Server - CRUD ( Create, Read, Update, Delete).
 - POJO Model.
-- construct MVC model.
+- Construct MVC model.
 
